@@ -1,12 +1,18 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
+import * as path from "path";
 import { MongoClient, Db} from "mongodb";
 import { DAO } from "./dao";
-import { FormReportRendition, FormProjectRendition } from "./models";
+import { FormReportRendition, FormProjectRendition, Project } from "./models";
+
+interface ProjectRequest extends express.Request {
+    project?: Project;
+}
 
 async function main() {
-    let app = express(),
-        port = 22171,
+    let port = 22171,
+        payloadBase = path.join(__dirname, "..", "frontendPopup"),
+        app = express(),
         db = await MongoClient.connect("mongodb://localhost:27017/bugreporting?autoReconnect=true&bufferMaxEntries=0"),
         dao = new DAO(db);
 
@@ -17,31 +23,37 @@ async function main() {
         next();
     });
 
-    app.get("/projects/:projectId", async (req, res) => {
-        let project = await dao.getProject(req.param("projectId"));
+    app.param("project", async (req: ProjectRequest, res, next, id) => {
+        let project = await dao.getProject(id);
 
         if (!project) {
-            res.send(404);
+            res.sendStatus(404);
             return;
         }
 
+        req.project = project;
+        next();
+    });
+    app.get("/projects/:project", async (req: ProjectRequest, res) => {
         let rendition: FormProjectRendition = {
-            id: project._id.toHexString(),
-            name: project.name
+            id: req.project._id.toHexString(),
+            name: req.project.name
         };
         res.send(rendition);
     });
-    app.post("/projects/:projectId/reports", async (req, res) => {
-        let project = await dao.getProject(req.param("projectId")),
-            report = req.body as FormReportRendition;
-
-        if (!project) {
-            res.send(404);
-            return;
-        }
-
-        await dao.addReport(project, report);
+    app.post("/projects/:project/reports", async (req: ProjectRequest, res) => {
+        let report = req.body as FormReportRendition;
+        await dao.addReport(req.project, report);
         res.send();
+    });
+    app.get("/payload/js", async (req, res) => {
+        res.sendFile(path.join(payloadBase, "build.js"));
+    });
+    app.get("/payload/html", async (req, res) => {
+        res.sendFile(path.join(payloadBase, "form.html"));
+    });
+    app.get("/payload/css", async (req, res) => {
+        res.sendFile(path.join(payloadBase, "form.css"));
     });
 
     app.set("trust proxy", true);
