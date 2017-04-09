@@ -1,3 +1,4 @@
 interface Project {
-    projectId: string;
+    id: string;
+    name: string;
 }

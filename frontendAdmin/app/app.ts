@@ -20,14 +20,13 @@ app.config(function ($routeSegmentProvider, $locationProvider, $routeProvider) {
 
 
     $routeSegmentProvider
-    
+
         .when('/', 'report')
         .otherwise('/')
 
         .segment('report', {
             default: true,
-            templateUrl: 'app/views/reports.html',
-            controller: 'reportController'
+            templateUrl: 'app/views/reports.html'
         });
 });
 
