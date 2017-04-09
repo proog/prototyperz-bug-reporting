@@ -6,17 +6,6 @@ var resolve = {
         return delay.promise;
     }
 };
-app.factory('Page', function () {
-    var title = 'Report Back App';
-    return {
-        title: function () {
-            return title;
-        },
-        setTitle: function (newTitle) {
-            title = newTitle + " | Report Back App";
-        }
-    };
-});
 // configure our routes
 app.config(function ($routeSegmentProvider, $locationProvider, $routeProvider) {
     $locationProvider.html5Mode(true);
@@ -52,18 +41,14 @@ app.run(function ($rootScope, $window) {
 });
 /// <reference path="../app.ts" />
 var LoginController = (function () {
-    function LoginController(http) {
+    function LoginController(http, Page) {
         this.http = http;
+        this.Page = Page;
     }
     return LoginController;
 }());
-LoginController.$inject = ["$http"];
+LoginController.$inject = ["$http", "Page"];
 app.controller("loginController", LoginController);
-/// <reference path="../app.ts" />
-app.controller('mainController', function ($scope, $http, $location, $routeSegment, Page) {
-    $scope.Page = Page;
-    $scope.$routeSegment = $routeSegment;
-});
 /// <reference path="../app.ts" />
 var ReportController = (function () {
     function ReportController(http, q) {

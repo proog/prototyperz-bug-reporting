@@ -1,9 +1,9 @@
 /// <reference path="../app.ts" />
 
 class LoginController {
-    static $inject = ["$http"];
+    static $inject = ["$http", "Page"];
 
-    constructor(private http: ng.IHttpService) {
+    constructor(private http: ng.IHttpService, public Page) {
 
     }
 }
