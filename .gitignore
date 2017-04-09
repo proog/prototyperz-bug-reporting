@@ -1,3 +1,6 @@
+api/*.js
+api/*.js.map
+
 
 # Created by https://www.gitignore.io/api/node
 
