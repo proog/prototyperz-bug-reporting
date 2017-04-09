@@ -30,17 +30,21 @@ class Main {
             this.showForm();
         });
 
-        $submitBtn.on("click", () => {
+        $('#report__back__wrapper #report__back__form').on("submit", (event) => {
+            event.preventDefault();
+
             let comment = $('#report__back__wrapper .form__report__comment').val(),
-                email = $('#report__back__wrapper .form__report__email').val();
+                email = $('#report__back__wrapper .form__report__email').val(),
+                image = $('#report__back__wrapper .form__report__image');
+
+            let formData = new FormData($('#report__back__wrapper #report__back__form')[0] as HTMLFormElement);
+
             $.post({
                 url: `https://permortensen.com/bugs/projects/${window["_ReportBackProjectID"]}/reports`,
-                contentType: "application/json",
-                data: JSON.stringify({
-                    type: this.type,
-                    comment: comment,
-                    email: email
-                }),
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
                 success: () => {
                     console.log("Thank you!");
                 },
@@ -48,6 +52,7 @@ class Main {
                     console.log("Fuck you!");
                 }
             });
+            return false;
         });
     }
 
@@ -66,4 +71,4 @@ class Main {
     }
 }
 
-var main:Main = new Main();
+var main: Main = new Main();

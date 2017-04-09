@@ -24,16 +24,16 @@ var Main = (function () {
             _this.type = "bug";
             _this.showForm();
         });
-        $submitBtn.on("click", function () {
-            var comment = $('#report__back__wrapper .form__report__comment').val(), email = $('#report__back__wrapper .form__report__email').val();
+        $('#report__back__wrapper #report__back__form').on("submit", function (event) {
+            event.preventDefault();
+            var comment = $('#report__back__wrapper .form__report__comment').val(), email = $('#report__back__wrapper .form__report__email').val(), image = $('#report__back__wrapper .form__report__image');
+            var formData = new FormData($('#report__back__wrapper #report__back__form')[0]);
             $.post({
                 url: "https://permortensen.com/bugs/projects/" + window["_ReportBackProjectID"] + "/reports",
-                contentType: "application/json",
-                data: JSON.stringify({
-                    type: _this.type,
-                    comment: comment,
-                    email: email
-                }),
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
                 success: function () {
                     console.log("Thank you!");
                 },
@@ -41,6 +41,7 @@ var Main = (function () {
                     console.log("Fuck you!");
                 }
             });
+            return false;
         });
     };
     Main.prototype.showForm = function () {
