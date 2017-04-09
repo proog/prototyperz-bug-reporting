@@ -13,6 +13,7 @@ interface ProjectRequest extends express.Request {
 
 async function main() {
     let port = 22171,
+        baseUrl = process.env.REPORTBACKBASEURL || "http://localhost:22171",
         payloadBase = path.join(__dirname, "..", "frontendPopup"),
         uploadBase = path.join(__dirname, "uploads"),
         app = express(),
@@ -55,7 +56,7 @@ async function main() {
                 entries: report.entries.map(entry => ({
                     userId: entry.userId ? entry.userId.toHexString() : undefined,
                     comment: entry.comment,
-                    image: entry.image ? `images/${path.basename(entry.image)}` : undefined
+                    image: entry.image ? `${baseUrl}/images/${path.basename(entry.image)}` : undefined
                 } as AdminReportEntryRendition))
             } as AdminReportRendition));
         res.send(rendition);
@@ -69,7 +70,9 @@ async function main() {
     app.get("/projects/:project/snippet", async (req: ProjectRequest, res) => {
         let snippet = `
             <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-            <script>window._ReportBackProjectID = ${req.project._id.toHexString()};</script>`;
+            <script>window._ReportBackProjectID = ${req.project._id.toHexString()};</script>
+            <link rel="stylesheet" href="${baseUrl}/payload/css"></script>
+            <script src="${baseUrl}/payload/js"></script>`;
         res.send(snippet);
     });
     app.get("/payload/js", async (req, res) => {
@@ -79,7 +82,7 @@ async function main() {
         res.sendFile(path.join(payloadBase, "form.html"));
     });
     app.get("/payload/css", async (req, res) => {
-        res.sendFile(path.join(payloadBase, "form.css"));
+        res.sendFile(path.join(payloadBase, "css", "main.css"));
     });
 
     app.set("trust proxy", true);
