@@ -1,18 +1,25 @@
 <div id="report__back__wrapper">
     <form id="report__back__form" method="post" enctype="multipart/form-data">
-        <div class="form__report" style="display: none;">
-            <h1 class="form__report__title"></h1>
-
+        <div class="form__report">
+            <div class="form__close"></div>
+            <p class="form__tag">Report a problem</p>
             <textarea name="comment" class="form__report__comment" placeholder="Write your comment here..."></textarea>
+            <p class="form__tag">Screenshot of the problem <span>(Optional)</span></p>  
+            <input name="image"  type="file" accept="image/*" class="form__report__image">
+            <label for="image"></label>
+            <div class="report__bg__darker">
+                <p class="form__tag">Keep me updated <span>(Optional)</span></p>
+                <input name="email" type="email" class="form__report__email" placeholder="Optional email">
+            </div>
 
-            <input name="email" type="email" class="form__report__email" placeholder="Optional email">
-
-            <input name="image" type="file" accept="image/*" class="form__report__image">
-
-            <button type="submit" class="button__submit">Submit</button>
+            <button type="submit" class="button__submit"></button>
+            <div class="report__bg__darker">
+                <div class="report__credits">Powered by <a href="#">Prototyperzzz</a></div>
+            </div>
         </div>
-
-        <div class="button__feature">Feature</div>
-        <div class="button__bug">Bug</div>
+        <div class="button__panel">
+            <div class="button__feature"></div>
+            <div class="button__bug"></div>
+        </div>
     </form>
 </div>
