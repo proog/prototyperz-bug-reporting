@@ -19,8 +19,7 @@ app.config(function ($routeSegmentProvider, $locationProvider, $routeProvider) {
         .otherwise('/')
         .segment('report', {
         default: true,
-        templateUrl: 'app/views/reports.html',
-        controller: 'reportController'
+        templateUrl: 'app/views/reports.html'
     });
 });
 app.run(function ($rootScope, $window) {
@@ -52,11 +51,22 @@ app.controller("loginController", LoginController);
 /// <reference path="../app.ts" />
 var ReportController = (function () {
     function ReportController(http, q) {
+        var _this = this;
         this.http = http;
         this.q = q;
         this.baseUrl = "https://permortensen.com/bugs";
         this.projectId = "58ea0efc40a27fe61a55179a";
+        this.getProject().then(function () {
+            _this.getReports();
+        });
     }
+    ReportController.prototype.getProject = function () {
+        var _this = this;
+        return this.http.get(this.baseUrl + "/projects/" + this.projectId)
+            .then(function (response) {
+            _this.project = response.data;
+        });
+    };
     ReportController.prototype.getReports = function () {
         var _this = this;
         this.http.get(this.baseUrl + "/projects/" + this.projectId + "/reports")

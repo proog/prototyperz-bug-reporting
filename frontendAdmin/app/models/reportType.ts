@@ -1,0 +1,1 @@
+type ReportType = "feature" | "bug";
