@@ -8,31 +8,19 @@ var resolve = {
     }
 };
 
-app.factory('Page', function () {
-    var title = 'Report Back App';
-    return {
-        title: function () {
-            return title;
-        },
-        setTitle: function (newTitle) {
-            title = newTitle + " | Report Back App";
-        }
-    };
-});
-
 // configure our routes
 app.config(function ($routeSegmentProvider, $locationProvider, $routeProvider) {
     $locationProvider.html5Mode(true);
     $routeSegmentProvider.options.autoLoadTemplates = true;
 
     $routeSegmentProvider.otherwise = function (route) {
-        $routeProvider.otherwise({redirectTo: route});
+        $routeProvider.otherwise({ redirectTo: route });
         return this;
     };
 
 
     $routeSegmentProvider
-
+    
         .when('/', 'report')
         .otherwise('/')
 
