@@ -18,7 +18,7 @@ export class DAO {
             email: rendition.email,
             entries: [{
                 comment: rendition.comment,
-                image: ""
+                image: rendition.image
             }]
         };
         await this.reports.insertOne(report);

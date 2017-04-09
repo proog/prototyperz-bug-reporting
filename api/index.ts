@@ -1,7 +1,8 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
+import * as multer from "multer";
 import * as path from "path";
-import { MongoClient, Db} from "mongodb";
+import { MongoClient, Db } from "mongodb";
 import { DAO } from "./dao";
 import { FormReportRendition, FormProjectRendition, Project } from "./models";
 
@@ -13,10 +14,11 @@ async function main() {
     let port = 22171,
         payloadBase = path.join(__dirname, "..", "frontendPopup"),
         app = express(),
+        upload = multer({ dest: path.join(__dirname, "uploads") }),
         db = await MongoClient.connect("mongodb://localhost:27017/bugreporting?autoReconnect=true&bufferMaxEntries=0"),
         dao = new DAO(db);
 
-    app.use(bodyParser.json({ type: "*/*" }));
+    app.use(bodyParser.json({ type: "application/json" }));
     app.use((req, res, next) => {
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -41,8 +43,9 @@ async function main() {
         };
         res.send(rendition);
     });
-    app.post("/projects/:project/reports", async (req: ProjectRequest, res) => {
+    app.post("/projects/:project/reports", upload.single("image"), async (req: ProjectRequest, res) => {
         let report = req.body as FormReportRendition;
+        report.image = req.file ? req.file.path : undefined;
         await dao.addReport(req.project, report);
         res.send();
     });
