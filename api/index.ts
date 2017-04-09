@@ -10,6 +10,13 @@ async function main() {
         db = await MongoClient.connect("mongodb://localhost:27017/bugreporting?autoReconnect=true&bufferMaxEntries=0"),
         dao = new DAO(db);
 
+    app.use(bodyParser.json({ type: "*/*" }));
+    app.use((req, res, next) => {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next();
+    });
+
     app.get("/projects/:projectId", async (req, res) => {
         let project = await dao.getProject(req.param("projectId"));
 
@@ -37,7 +44,6 @@ async function main() {
         res.send();
     });
 
-    app.use(bodyParser.json({ type: "*/*" }));
     app.set("trust proxy", true);
     app.listen(port);
     console.log(`Listening on ${port}`);
