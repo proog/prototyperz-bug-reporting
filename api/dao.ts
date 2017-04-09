@@ -11,6 +11,12 @@ export class DAO {
         }) as Project;
     }
 
+    async getReports(project: Project) {
+        return await this.reports.find({
+            projectId: project._id
+        }).toArray() as Report[];
+    }
+
     async addReport(project: Project, rendition: FormReportRendition) {
         let report: Report = {
             projectId: project._id,

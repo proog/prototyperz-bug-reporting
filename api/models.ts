@@ -40,3 +40,16 @@ export interface FormProjectRendition {
     id: string;
     name: string;
 }
+
+export interface AdminReportRendition {
+    id: string;
+    type: ReportType;
+    email?: string;
+    entries: AdminReportEntryRendition[];
+}
+
+export interface AdminReportEntryRendition {
+    userId?: string;
+    comment?: string;
+    image?: string;
+}
