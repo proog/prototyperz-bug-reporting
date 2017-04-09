@@ -25,7 +25,7 @@ var Main = (function () {
             _this.showForm();
         });
         $submitBtn.on("click", function () {
-            var comment = $('#report__back__wrapper .form__report__comment').text(), email = $('#report__back__wrapper .form__report__email').val();
+            var comment = $('#report__back__wrapper .form__report__comment').val(), email = $('#report__back__wrapper .form__report__email').val();
             $.post({
                 url: "https://permortensen.com/bugs/projects/" + window["_ReportBackProjectID"] + "/reports",
                 contentType: "application/json",

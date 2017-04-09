@@ -31,7 +31,7 @@ class Main {
         });
 
         $submitBtn.on("click", () => {
-            let comment = $('#report__back__wrapper .form__report__comment').text(),
+            let comment = $('#report__back__wrapper .form__report__comment').val(),
                 email = $('#report__back__wrapper .form__report__email').val();
             $.post({
                 url: `https://permortensen.com/bugs/projects/${window["_ReportBackProjectID"]}/reports`,
