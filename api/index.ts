@@ -23,6 +23,7 @@ async function main() {
 
     app.use(bodyParser.json({ type: "application/json" }));
     app.use("/images", express.static(uploadBase));
+    app.use("/img", express.static(path.join(payloadBase, "img")));
     app.use((req, res, next) => {
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
