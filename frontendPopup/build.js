@@ -3,8 +3,9 @@
 var Main = (function () {
     function Main() {
         var _this = this;
+        this.baseUrl = "https://permortensen.com/bugs";
         jQuery(document).ready(function () {
-            $.get("form.html", function (data) {
+            $.get(_this.baseUrl + "/payload/html", function (data) {
                 $("body").append(data);
                 _this.buttonListener();
                 console.log(window["_ReportBackProjectID"]);
@@ -29,7 +30,7 @@ var Main = (function () {
             var comment = $('#report__back__wrapper .form__report__comment').val(), email = $('#report__back__wrapper .form__report__email').val(), image = $('#report__back__wrapper .form__report__image');
             var formData = new FormData($('#report__back__wrapper #report__back__form')[0]);
             $.post({
-                url: "https://permortensen.com/bugs/projects/" + window["_ReportBackProjectID"] + "/reports",
+                url: _this.baseUrl + "/projects/" + window["_ReportBackProjectID"] + "/reports",
                 data: formData,
                 cache: false,
                 contentType: false,
