@@ -33,6 +33,7 @@ export interface FormReportRendition {
     type: ReportType;
     email?: string;
     comment?: string;
+    image?: string;
 }
 
 export interface FormProjectRendition {
