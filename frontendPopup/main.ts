@@ -3,7 +3,7 @@
 type ReportType = "feature" | "bug";
 
 class Main {
-    baseUrl = "https://permortensen.com/bugs";
+    baseUrl: string = window["_ReportBackBaseUrl"] || "http://localhost:22171";
     type: ReportType;
 
     constructor() {
