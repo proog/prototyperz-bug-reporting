@@ -2,7 +2,7 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as multer from "multer";
 import * as path from "path";
-import * as fs from "fs";
+import * as _ from "lodash";
 import { MongoClient, Db } from "mongodb";
 import { DAO } from "./dao";
 import { FormReportRendition, FormProjectRendition, Project, AdminReportRendition, AdminReportEntryRendition } from "./models";
@@ -64,13 +64,19 @@ async function main() {
     });
     app.post("/projects/:project/reports", upload.single("image"), async (req: ProjectRequest, res) => {
         let report = req.body as FormReportRendition;
+
+        if (!report || !report.comment || !_.includes(["feature", "bug"], report.type)) {
+            res.sendStatus(400);
+            return;
+        }
+
         report.image = req.file ? req.file.path : undefined;
         await dao.addReport(req.project, report);
         res.send();
     });
     app.get("/projects/:project/snippet", async (req: ProjectRequest, res) => {
-        let snippet = `
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        let snippet =
+            `<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
             <script>window._ReportBackProjectID = "${req.project._id.toHexString()}";window._ReportBackBaseUrl = "${baseUrl}";</script>
             <link rel="stylesheet" href="${baseUrl}/payload/css"></script>
             <script src="${baseUrl}/payload/js"></script>`;
