@@ -3,7 +3,7 @@
 type ReportType = "feature" | "bug";
 
 class Main {
-    baseUrl = "https://permortensen.com/bugs";
+    baseUrl: string = window["_ReportBackBaseUrl"] || "http://localhost:22171";
     type: ReportType;
 
     constructor() {
@@ -17,9 +17,9 @@ class Main {
     }
 
     buttonListener() {
-        let $featureBtn = $('#report__back__wrapper .button__feature');
-        let $bugBtn = $('#report__back__wrapper .button__bug');
-        let $submitBtn = $('#report__back__wrapper .button__submit');
+        let $featureBtn = $('#report__back__wrapper .button__feature'),
+            $bugBtn = $('#report__back__wrapper .button__bug'),
+            $formReport = $('#report__back__wrapper #report__back__form');
 
         $featureBtn.on("click", () => {
             this.type = "feature";
@@ -31,14 +31,10 @@ class Main {
             this.showForm();
         });
 
-        $('#report__back__wrapper #report__back__form').on("submit", (event) => {
+        $formReport.on("submit", (event) => {
             event.preventDefault();
 
-            let comment = $('#report__back__wrapper .form__report__comment').val(),
-                email = $('#report__back__wrapper .form__report__email').val(),
-                image = $('#report__back__wrapper .form__report__image');
-
-            let formData = new FormData($('#report__back__wrapper #report__back__form')[0] as HTMLFormElement);
+            let formData = new FormData($formReport[0] as HTMLFormElement);
 
             $.post({
                 url: `${this.baseUrl}/projects/${window["_ReportBackProjectID"]}/reports`,
