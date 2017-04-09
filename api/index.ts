@@ -71,7 +71,7 @@ async function main() {
     app.get("/projects/:project/snippet", async (req: ProjectRequest, res) => {
         let snippet = `
             <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-            <script>window._ReportBackProjectID = ${req.project._id.toHexString()};</script>
+            <script>window._ReportBackProjectID = "${req.project._id.toHexString()}";</script>
             <link rel="stylesheet" href="${baseUrl}/payload/css"></script>
             <script src="${baseUrl}/payload/js"></script>`;
         res.send(snippet);
