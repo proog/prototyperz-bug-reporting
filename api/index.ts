@@ -46,6 +46,12 @@ async function main() {
         await dao.addReport(req.project, report);
         res.send();
     });
+    app.get("/projects/:project/snippet", async (req: ProjectRequest, res) => {
+        let snippet = `
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+            <script>window._ReportBackProjectID = ${req.project._id.toHexString()};</script>`;
+        res.send(snippet);
+    });
     app.get("/payload/js", async (req, res) => {
         res.sendFile(path.join(payloadBase, "build.js"));
     });
