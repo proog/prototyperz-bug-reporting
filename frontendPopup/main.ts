@@ -9,6 +9,7 @@ class Main {
             $.get("form.html", (data) => {
                 $("body").append(data);
                 this.buttonListener();
+                console.log(window["_ReportBackProjectID"] as string);
             });
         });
     }
