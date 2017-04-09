@@ -7,6 +7,7 @@ var Main = (function () {
             $.get("form.html", function (data) {
                 $("body").append(data);
                 _this.buttonListener();
+                console.log(window["_ReportBackProjectID"]);
             });
         });
     }
