@@ -1,20 +1,24 @@
 <div ng-controller="reportController as vm">
     <h1>Project Name: {{vm.project.name}}</h1>
 
-    <div class="report-container col-xs-12 col-lg-8 row">
-        <div class="panel" ng-repeat="report in vm.reports" ng-class="{'panel-success': report.type == 'feature', 'panel-danger': report.type == 'bug'}">
-            
-            <!--<img ng-src="{{report}}">-->
-            <div class="panel-heading">
-                <h3 class="panel-title" ng-bind="report.type"></h3>
-            </div>
-            <div class="panel-body">
-                <i ng-if="report.email">Notify: {{report.email}}</i>
-                <div ng-repeat="entry in report.entries">
+    <div class="report-container">
+        <div ng-repeat="report in vm.reports" class="row">
+            <div class="col-xs-12">
+                <div class="panel" ng-class="{'panel-success': report.type == 'feature', 'panel-danger': report.type == 'bug'}">
 
-                    <p>{{entry.comment}}</p>
+                    <!--<img ng-src="{{report}}">-->
+                    <div class="panel-heading">
+                        <h3 class="panel-title" ng-bind="report.type"></h3>
+                    </div>
+                    <div class="panel-body">
+                        <i ng-if="report.email">Notify: {{report.email}}</i>
+                        <div ng-repeat="entry in report.entries">
+
+                            <p>{{entry.comment}}</p>
+                        </div>
+                        <p><a href="#" class="btn btn-primary" role="button">Reply</a> <a href="#" class="btn btn-default" role="button">Resolve</a></p>
+                    </div>
                 </div>
-                <p><a href="#" class="btn btn-primary" role="button">Reply</a> <a href="#" class="btn btn-default" role="button">Resolve</a></p>
             </div>
         </div>
     </div>
